@@ -5,11 +5,15 @@ Brief description: analysis of the GitSkills dataset for the MSR Data Challenge
 locations) and tool licensing.
 
 ## Index
+
 1. [Research Questions](docs/rq.md)
 2. [Docs](docs/) — artifacts relevant for our research
 3. [Brainstorm](brainstorm/) — any findings for our research
+4. [Data exploration](.data-exploration) - suggested folder for scripts
 
 ## Research Team
+
 - nichmorgan
 - sullivanap
 - swBodenhemier
+
