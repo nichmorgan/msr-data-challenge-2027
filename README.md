@@ -20,19 +20,17 @@ locations) and tool licensing.
 
 ## Research Questions
 
-1. What proportion of skills use vendor-neutral rather than tool-specific
-   locations, and how does this proportion change over time?  
-2. Do skill texts address one named tool, or any agent that implements the
-   specification?  
-3. What kind of license have these tools?  
+1. What are the most common tools and agents mentioned in skills files?
+2. What is the license distribution of the tools and dependencies mentioned by skills files?
+3. What are the skills files allowing the most common agents and tools to access in the project, and how does this relate to the license of the tool?
 
 ## Methodology
 
 Initial methodology, to be expanded upon...
 
-1. Sample by skills file first commit date in order to see change in time, sort each skills file path into "vender-neutral" and "tool-specific" categories (use or compile a list of vender and tool names to filter with, include a third "unsorted" group that we can analyze and add new entries to the compiled lists with), graph proportions over time.  
-2. Create a list of most common tools and agents mentioned within skills files, and how these tools and agents relate to the vender-neutral and tool-specific categories.   
-3. Find license totals for each group of vender-neutral and tool-specific over time to see how the project license relates to how the skill file is stored and named. Also find the relation between license and tools/agents mentioned within the skills files.  
+1. Parse the skills files and create a list of most common tools and agents mentioned within skills files.
+2. Run a script to locate the repository or site of the mentioned tools and agents and find their license/whether they are open source or proprietary.
+3. Collect a sample of the result from RQ2 and analyze the skills files themselves. What are the tools and agents allowed to change within the repo, what access rights are they given. Categorize the results into different levels of access, and then map those categories to the licenses found from RQ2.
 
 ## Research Team
 
