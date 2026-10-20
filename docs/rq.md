@@ -1,9 +1,5 @@
 # Research Questions
 
-a) What proportion of skills use vendor-neutral rather than tool-specific
-   locations, and how does this proportion change over time?
-
-b) Do skill texts address one named tool, or any agent that implements the
-   specification?
-
-c) What kind of license have these tools?
+1. What are the most common tools mentioned in skills files?
+2. What is the license distribution of the tools mentioned by skills files?
+3. What are the skills files allowing the most common tools to access in the project, and how does this relate to the license of the tool?
