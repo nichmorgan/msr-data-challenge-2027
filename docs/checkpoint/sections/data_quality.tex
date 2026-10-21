@@ -1,1 +1,41 @@
 \section{Data Quality}
+
+Our quality concern is the AI-assisted steps in the pipeline and how we keep
+their outputs trustworthy before later analysis uses them.
+We apply AI for taught-tool and organization extraction with
+GLiNER~\cite{zaratiana2023glinergeneralistmodelnamed}, for selecting an owning
+repository with a reasoning model (TBD) when a tool is not already linked, and
+for license-identity gaps when that step is AI-assisted.
+Extraction reads only textual skill-file content from
+GitSkills~\cite{gitskills2027}, never sibling files.
+
+For each AI stage we draw a random sample of outputs (sample size TBD) and
+score accuracy against the operating threshold.
+For example, a GLiNER score threshold of $0.8$ requires at least $80\%$ sample
+accuracy.
+If the sample falls short, we adjust the threshold and re-run or re-filter that
+stage.
+If it meets the target, we manually resolve remaining gaps, merge automatic and
+manual results while dropping non-existing entities, and only then advance.
+The appendix flowchart shows this gate, gap fill, and merge after each major
+AI stage.
+
+Without AI assistance the same steps would be full manual extraction, and
+checking every AI output by hand would take effort on the same order as that
+work, but either path would limit how many skills, tools, and repositories we
+can cover.
+We therefore accept a bounded residual error under the sample accuracy gate,
+in the same spirit as a population survey that estimates from a sample instead
+of visiting every case, so the study can scale.
+Stages that miss the bar are retuned or re-filtered, and only after the bar
+is met do we manually fill remaining gaps and merge before advancing.
+
+The gate is meant to catch common failure modes of these models.
+On extraction, that includes treating a host skill directory, a publishing
+repository, or an in-text attribution link as a taught tool.
+On repository resolution, it includes choosing the wrong project among API or
+web-search candidates.
+We also fix a seed for sampling and applicable model calls, while noting
+residual API non-determinism where a seed is not honored.
+Open parameters remain the sample sizes and the concrete ranking model, both
+still TBD, so we do not claim measured accuracies in this checkpoint.
