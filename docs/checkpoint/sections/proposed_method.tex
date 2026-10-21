@@ -11,7 +11,7 @@ merges).
 
 For each AI stage we apply a quality gate on a random sample of outputs (sample
 size TBD), and tie expected accuracy to the operating
-threshold (e.g., a GLiNER score threshold of $0.8$ requires at least $80\%$
+threshold (e.g., a GLiNER~\cite{zaratiana2023glinergeneralistmodelnamed} score threshold of $0.8$ requires at least $80\%$
 sample accuracy).
 If the sample is below target, we adjust the threshold and re-run or re-filter
 that stage, and if it meets the target we manually resolve gaps, merge
