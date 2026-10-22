@@ -1,0 +1,21 @@
+\begin{tikzpicture}[
+  stage/.style={
+    draw,
+    rounded corners=2pt,
+    align=center,
+    text width=0.82\columnwidth,
+    inner sep=5pt,
+    font=\small\sffamily
+  },
+  arr/.style={-{Stealth[length=2mm]}, thick}
+]
+  \node[stage] (s1) {Dataset population};
+  \node[stage, below=5mm of s1] (s2) {Tool and organization extraction};
+  \node[stage, below=5mm of s2] (s3) {Repository resolution};
+  \node[stage, below=5mm of s3] (s4) {License discovery};
+  \node[stage, below=5mm of s4] (s5) {License freedom grouping};
+  \draw[arr] (s1) -- (s2);
+  \draw[arr] (s2) -- (s3);
+  \draw[arr] (s3) -- (s4);
+  \draw[arr] (s4) -- (s5);
+\end{tikzpicture}
