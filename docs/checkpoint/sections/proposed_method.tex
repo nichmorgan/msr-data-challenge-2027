@@ -1,1 +1,79 @@
 \section{Proposed Method}
+
+We use an AI-assisted mixed-methods design implemented in Python with Polars
+DataFrames to analyze GitSkills~\cite{gitskills2027}, downloaded from Hugging
+Face,\footnote{\url{https://huggingface.co/datasets/mvaccargiu/gitskills}}
+and we fix a seed for stochastic steps (sampling and applicable model calls) so
+the run is reproducible.
+Fig.~\ref{fig:pipeline-simple} summarizes the five major stages, while the
+appendix gives the extended flowchart (accuracy checks, manual gap fill, and
+merges).
+
+For each AI stage we apply a quality gate on a random sample of outputs (sample
+size TBD), and tie expected accuracy to the operating
+threshold (e.g., a GLiNER~\cite{zaratiana2023glinergeneralistmodelnamed} score threshold of $0.8$ requires at least $80\%$
+sample accuracy).
+If the sample is below target, we adjust the threshold and re-run or re-filter
+that stage, and if it meets the target we manually resolve gaps, merge
+automatic and manual results (dropping non-existing entities), and only then
+advance.
+
+\begin{figure}[!t]
+  \centering
+  \input{assets/pipeline-simplified}
+  \caption{High-level analysis pipeline.
+    See the appendix for the extended diagram (accuracy checks, manual gap fill,
+    and merges).}
+  \label{fig:pipeline-simple}
+\end{figure}
+
+\subsection{Dataset population}
+
+We download GitSkills and load the Parquet tables with Polars, while population
+filters and analysis slices remain TBD (candidates include
+\texttt{dedup\_primary}, \texttt{frontmatter\_valid}, exact \texttt{SKILL.md}
+filename, and \texttt{location\_class}).
+For extraction we use only the \texttt{SKILL.md} content and never sibling
+files, keeping a skill when that content is textual and skipping non-text
+cases such as CSS.
+
+\subsection{Tool and organization extraction}
+
+We extract taught \emph{tools} and \emph{organizations} with GLiNER
+(initial score threshold $0.8$), where a tool is a product the skill teaches
+the agent to use, not the host skill directory, publishing repository, or an
+in-text attribution link.
+Organizations support later repository search, while RQ1 frequencies count
+taught tools.
+After the quality gate, empty or unresolved rows are filled manually and merged
+before repository resolution.
+
+\subsection{Repository resolution}
+
+We resolve tools sequentially, reusing a project when a tool is already linked
+and otherwise querying versioning platforms (e.g., GitHub or GitLab) and using
+a reasoning model (TBD) to select the owning repository from API candidates,
+with open-web search as a fallback.
+The same accuracy gate, manual gap fill, and merge close this stage before
+license discovery.
+
+\subsection{License discovery}
+
+For each resolved repository we scan the repository root for conventional
+license filenames (e.g., \texttt{LICENSE}, \texttt{COPYING}), extract the
+license identity, and link it to the tool, with gaps again going through sample
+validation (when AI-assisted), manual review, and merge.
+
+\subsection{License freedom grouping}
+
+Confirmed licenses are grouped by \emph{freedom}, meaning what the license
+allows or denies doing with the tool (not only SPDX\footnote{Software Package Data Exchange (SPDX) provides short standard license identifiers such as MIT and Apache-2.0. See \url{https://spdx.org/licenses/}.} string frequency), and these
+groups support RQ2 (license distribution) and RQ3 (project access patterns for
+top tools versus freedom class).
+
+Units of analysis follow the pipeline, so RQ1 uses distinct skills and tool
+mentions, RQ2 uses confirmed tools with licenses, and RQ3 uses skill-tool pairs
+for frequent tools after merge.
+Limitations include TBD sample sizes and population slices, a TBD repository
+ranking model, wrong-repository selection, root-only license scans, and residual
+API non-determinism where seeds are not honored.
