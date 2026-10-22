@@ -1,14 +1,26 @@
 \section{Research Questions and Related Work}
 
+For the purpose of this paper, when we say "tools" what we means is dependencies and outside resources referenced in skills files. 
+For example a react project may reference npm in the skills file, or an e-commerce platform may reference elasticsearch; both npm and elasticsearch would be treated as a "tool".
+
 \subsection{RQ1: What are the most common tools mentioned in skills files?}
 
 Our first goal is to compile a list of tools used by agent skills.
 This research will help us understand what kinds of agent services skills files aim to direct.
 Additionally, once we have a list of common tools it will be possible to perform additional analysis of the relationships between skills files and their tools.
 
+TODO: discuss related work \cite{10.1145/3770855.3818652}
+
 \subsection{RQ2: What is the license distribution of the tools mentioned by skills files?}
 
 The goal of this research question is to understand the relationship between the tools that skills files rely on, and the licenses of those tools.
 We aim to understand what kind of tools are used by skills, specifically what proportion are open source versus proprietary.
 
-\subsection{RQ3: What are the skills files allowing the most common tools to access in the project, and how does this relate to the license of the tool?}
+TODO: discuss related work \cite{10.1145/3786335.3813145}
+
+\subsection{RQ3: What is the license distribution of the projects that host tools mentioned in skills files, grouped by the freedom each license provides?}
+
+Lastly, we wish to analyze the projects that host the discovered tools and specifically the freedom that their licenses provide.
+This builds on the results of RQ2, and we can view the relationship between licenses in: repositories that host skill files, the tools used by the skills, and the projects that host those tools.
+
+TODO: discuss related work \cite{10.1145/3770855.3818652} \cite{10.1145/3743133}
