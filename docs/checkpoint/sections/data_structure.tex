@@ -1,14 +1,25 @@
 \section{Data Structure}
 
-Each row in the dataset corresponds to a single skill referenced in the skills.md file.
-For each entry,  the dataset contains the following fields:
+This dataset contains 5 tables of data: artifacts, repositories, artifact siblings, history, and mining run data.
+The latter of which is not relevant to studying the dataset, so we will focus only on the first 4 tables.
+In the artifact table, each row corresponds to a single \texttt{SKILL.md} file.
+Repository metadata is included for referencing, and contains the repository name, owner, and license.
+Artifact siblings are files that are referenced within the skills file and stored in the same directory as the skills file.
+And finally, history data contains information on the commit history of the skills file, including the first and last commit dates, and the author type (user or bot).
+Our study will working mainly with the artifact table and its associated fields.
+Each artifact contains the following fields (not including flags):
 
 \begin{itemize}
-    \item \textit{Repository Name}: Name of the repository containing the skills.md file.
-    \item \textit{Artifact Path}: Path to the skills.md file within the repository.
+    \item \textit{Repository Name}: Name of the repository containing the \texttt{SKILL.md} file.
+    \item \textit{Artifact Path}: Path to the \texttt{SKILL.md} file within the repository.
     \item \textit{Entry Name}: Assigned name of the skill
     \item \textit{Entry Type}: Type of the skill
     \item \textit{Entry Size}: Size in bytes of the body of the skill
     \item \textit{Entry SHA}: SHA hash of the entry (Identical entries will have the same SHA))
     \item \textit{Content}: Text in the body of the skill
 \end{itemize}
+
+The paper mentions that some entries have identical SHA values, which indicates that there is a duplicate
+artifact in the dataset~\cite{gitskills2027}. This is something we will consider when filtering into our working dataset.
+This study will mainly be extracting data from the \textit{content} field for each artifact, as we will initially
+be gathering the names of the tools mentioned in each skill.
