@@ -68,12 +68,12 @@ validation (when AI-assisted), manual review, and merge.
 
 Confirmed licenses are grouped by \emph{freedom}, meaning what the license
 allows or denies doing with the tool (not only SPDX\footnote{Software Package Data Exchange (SPDX) provides short standard license identifiers such as MIT and Apache-2.0. See \url{https://spdx.org/licenses/}.} string frequency), and these
-groups support RQ2 (license distribution) and RQ3 (project access patterns for
-top tools versus freedom class).
+groups support RQ2 (license distribution of tools) and RQ3 (freedom grouping of
+projects that host tools mentioned in skills).
 
 Units of analysis follow the pipeline, so RQ1 uses distinct skills and tool
-mentions, RQ2 uses confirmed tools with licenses, and RQ3 uses skill-tool pairs
-for frequent tools after merge.
+mentions, RQ2 uses confirmed tools with licenses, and RQ3 uses resolved projects
+with a freedom group.
 Limitations include TBD sample sizes and population slices, a TBD repository
 ranking model, wrong-repository selection, root-only license scans, and residual
 API non-determinism where seeds are not honored.

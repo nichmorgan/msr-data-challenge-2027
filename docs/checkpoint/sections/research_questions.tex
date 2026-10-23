@@ -1,14 +1,40 @@
 \section{Research Questions and Related Work}
 
-\subsection{RQ1: What are the most common tools mentioned in skills files?}
+In this paper, we use \emph{tool} to mean an external dependency or resource that a skills file names or references in instructions for completing a task.
+This is an important definition for our study, it includes software packages, developer tools, APIs, platforms, and services, but does not imply that the referenced resource is necessarily callable by the agent.
+For example, \texttt{npm} or a named package may be referenced in a React skill, while \texttt{Elasticsearch} may be referenced in an e-commerce skill.
+These cases are referred to as tools even if the file does not provide a direct integration.
+We also distinguish between tools and tool projects, multiple tools may resolve to the same project, and a single service or product may have several names or components.
+
+\subsection*{RQ1: What are the most common tools mentioned in skills files?}
 
 Our first goal is to compile a list of tools used by agent skills.
+Identifying frequently referenced tools can reveal which parts of the software ecosystem skills are designed to help users navigate, and can provide a basis for studying dependencies and relationships between skills.
+For OSS maintainers, such patterns may also indicate where skills could influence discovery and use of projects.
 This research will help us understand what kinds of agent services skills files aim to direct.
 Additionally, once we have a list of common tools it will be possible to perform additional analysis of the relationships between skills files and their tools.
 
-\subsection{RQ2: What is the license distribution of the tools mentioned by skills files?}
+Prior research provides a broad picture of skill content and function, including the concentration of skills in software-engineering tasks~\cite{10.1145/3770855.3818652}.
+What remains less clear for our purposes is the identity and frequency of the external resources named within skill instructions.
 
-The goal of this research question is to understand the relationship between the tools that skills files rely on, and the licenses of those tools.
-We aim to understand what kind of tools are used by skills, specifically what proportion are open source versus proprietary.
+\subsection*{RQ2: What is the license distribution of the tools mentioned by skills files?}
 
-\subsection{RQ3: What are the skills files allowing the most common tools to access in the project, and how does this relate to the license of the tool?}
+This question matters because the license of a referenced tool can affect whether and how developers may use, modify, redistribute, or incorporate it into software projects.
+Understanding the distribution can help characterize whether skills predominantly direct users toward openly licensed software, proprietary products or services, or a mixture of these.
+This is relevant to engineering decisions involving dependency selection, compliance review, and reproducibility.
+A mention in a skills file, however, may not indicate that the skill's author or user has reviewed or complied with the tool's license.
+
+Related work on agent tool use addresses questions such as how tools are exposed and secured in agent systems~\cite{10.1145/3786335.3813145}.
+That work motivates attention to the external systems used by agents, but does not answer the question posed here.
+
+\subsection*{RQ3: What is the license distribution of the projects that host tools mentioned in skills files, grouped by the freedom each license provides?}
+
+RQ3 shifts the unit of analysis from the tool as named in a skills file to the project that hosts or provides it.
+The distinction is important because a tool name may refer to a product with multiple components, and a tool may be distributed by a project whose repository license differs from the terms governing a hosted service.
+This question matters to OSS and software engineering because license names alone do not fully describe the permissions and obligations relevant to reuse.
+Grouping licenses by the freedoms they provide can make the distribution more interpretable in terms of what users are permitted to do with the project.
+
+Prior work has examined developers' perspectives on licensing and copyright issues related to generative AI for software development, using a survey of 574 developers and follow-up interviews~\cite{stalnaker2026developerperspectives}.
+That work informs the importance of licensing and ownership questions in contemporary development, but it measures developer perspectives rather than the license terms of projects referenced by agent skills.
+Another study likewise provides context on the skills ecosystem, but does not, as framed here, provide the project-level, rights-oriented license distribution we seek~\cite{10.1145/3770855.3818652}.
+Our study adds a project-level view linking skill references to hosting projects and classifying identified licenses by the permissions they grant.
