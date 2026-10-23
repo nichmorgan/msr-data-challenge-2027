@@ -22,7 +22,7 @@ locations) and tool licensing.
 
 1. What are the most common tools mentioned in skills files?
 2. What is the license distribution of the tools and dependencies mentioned by skills files?
-3. What are the skills files allowing the most common tools to access in the project, and how does this relate to the license of the tool?
+3. What is the license distribution of the projects that host tools mentioned in skills files, grouped by the freedom each license provides?
 
 ## Methodology
 
@@ -30,7 +30,7 @@ Initial methodology, to be expanded upon...
 
 1. Parse the skills files and create a list of most common tools mentioned within skills files.
 2. Run a script to locate the repository or site of the mentioned tools and find their license/whether they are open source or proprietary.
-3. Collect a sample of the result from RQ2 and analyze the skills files themselves. What are the tools allowed to change within the repo, what access rights are they given. Categorize the results into different levels of access, and then map those categories to the licenses found from RQ2.
+3. Resolve the projects that host the mentioned tools, group their licenses by the freedom each license provides, and describe that distribution.
 
 ## Research Team
 
