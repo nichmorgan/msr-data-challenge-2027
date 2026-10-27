@@ -38,3 +38,17 @@ Initial methodology, to be expanded upon...
 - sullivanap
 - swBodenhemier
 
+## Environment setup
+
+1. `cd scripts`
+2. Create virtual environment: `python3 -m venv .venv`
+3. Activate venv: `source .venv/bin/activate` (or `.venv\Scripts\activate` on Windows)
+4. Install dependencies: `python3 -m pip install -r requirements.txt`
+
+Exit python evn: `deactivate`
+
+For future work just activate venv with step 3
+
+If you use VSCode, make sure to select the venv python kernel in the jupyter notebooks
+
+To add new dependencies: add new dependencies to requirements.txt and rerun step 4
