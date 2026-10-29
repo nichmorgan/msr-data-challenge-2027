@@ -2,4 +2,6 @@
 **/.build/
 **/.out/
 .cursor/
+.venv/
+**/.venv/
 AGENTS.md

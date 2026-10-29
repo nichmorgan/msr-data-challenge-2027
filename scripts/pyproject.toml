@@ -1,0 +1,15 @@
+[project]
+name = "msr-data-challenge-2027"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "datasets>=5.1.0",
+    "gliner[gpu]>=0.2.29",
+    "ipykernel>=7.4.0",
+    "jupyter>=1.1.1",
+    "nbconvert>=7.17.2",
+    "polars>=2.1.0",
+    "pyarrow>=26.0.0",
+    "seaborn>=0.13.2",
+    "seaborn-polars>=0.0.2.6",
+]
