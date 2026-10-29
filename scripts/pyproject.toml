@@ -1,7 +1,7 @@
 [project]
 name = "msr-data-challenge-2027"
 version = "0.1.0"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "aiohappyeyeballs==2.7.1",
     "aiohttp==3.14.5",
