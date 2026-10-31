@@ -1,5 +1,5 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/.data-exploration/.venv/bin/python",
+  "python.defaultInterpreterPath": "${workspaceFolder}/scripts/.venv/bin/python",
   "latex-workshop.latex.outDir": "%DIR%/.out",
   "latex-workshop.formatting.latex": "latexindent",
   "latex-workshop.latex.tools": [
@@ -19,7 +19,9 @@
   "latex-workshop.latex.recipes": [
     {
       "name": "latexmk",
-      "tools": ["latexmk"]
+      "tools": [
+        "latexmk"
+      ]
     }
   ]
 }
