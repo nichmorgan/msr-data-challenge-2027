@@ -5,3 +5,4 @@
 .venv/
 **/.venv/
 AGENTS.md
+scripts/dataset/
