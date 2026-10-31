@@ -4,7 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "datasets>=5.1.0",
-    "gliner[gpu]>=0.2.29",
+    "gliner[gpu]>=0.2.30",
     "ipykernel>=7.4.0",
     "jupyter>=1.1.1",
     "nbconvert>=7.17.2",
