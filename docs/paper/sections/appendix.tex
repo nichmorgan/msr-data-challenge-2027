@@ -1,14 +1,15 @@
 \section{Extended Pipeline}
 
 Fig.~\ref{fig:pipeline-extended} expands Fig.~\ref{fig:pipeline-simple} from Section~\ref{sec:future}.
-Each major stage keeps a top-to-bottom order.
+The stages run from top to bottom, and the steps inside each stage run from left to right.
 A step that relies on a model is followed by a sample check, then either a change of labels or cutoff or a manual review of gaps, and then a merge before the next stage.
 
 \begin{figure*}[p]
   \centering
-  \resizebox{!}{0.92\textheight}{\input{assets/pipeline-extended}}
+  \resizebox{\textwidth}{!}{\input{assets/pipeline-extended}}
   \caption{Extended analysis pipeline.
-    Decision exits leave from the bottom of each diamond, marked Yes or No.
+    Each stage reads from left to right, except that the second row of repository resolution runs back from right to left.
+    Every exit from a diamond is marked Yes or No.
     Dashed arrows are retries after a change of labels or cutoff.
     The extraction labels, the validation sample size, and the repository ranking model are still to be decided.}
   \label{fig:pipeline-extended}
