@@ -1,0 +1,145 @@
+% Extended analysis pipeline drawn as horizontal bands on a five-column grid.
+% Stages stack top to bottom and steps run left to right. The second row of
+% stage 3 runs right to left, which keeps every line free of crossings.
+\begin{tikzpicture}[
+  font=\small\sffamily,
+  every node/.style={align=center},
+  box/.style={
+    draw,
+    rounded corners=1.5pt,
+    inner sep=3pt,
+    minimum height=9mm,
+    text width=2.6cm
+  },
+  decision/.style={
+    draw,
+    diamond,
+    aspect=2.2,
+    inner sep=0.5pt
+  },
+  stageframe/.style={
+    draw,
+    rounded corners=2pt,
+    inner sep=6pt,
+    thick
+  },
+  stagelabel/.style={
+    font=\small\sffamily\bfseries,
+    anchor=south east,
+    xshift=-2mm
+  },
+  exit/.style={font=\scriptsize\sffamily, inner sep=1.5pt},
+  arr/.style={-{Stealth[length=1.8mm]}, semithick},
+  dasharr/.style={-{Stealth[length=1.8mm]}, semithick, densely dashed}
+]
+  % Column centers.
+  \def\cola{0}
+  \def\colb{4}
+  \def\colc{8}
+  \def\cold{12}
+  \def\cole{16}
+  % Row centers.
+  \def\rowpop{0}
+  \def\rowner{-3.05}
+  \def\rownertune{-4.85}
+  \def\rowweb{-7.3}
+  \def\rowrepo{-9.2}
+  \def\rowreuse{-11.1}
+  \def\rowcheck{-12.85}
+  \def\rowlic{-16.1}
+  \def\rowlictune{-17.9}
+  \def\rowfree{-20.5}
+
+  % ---- 1 Study population ----
+  \node[box] (seed) at (\cola,\rowpop) {Fixed random seed};
+  \node[box] (hf) at (\colb,\rowpop) {Frozen copy of release 3};
+  \node[box] (polars) at (\colc,\rowpop) {Load with Polars};
+  \node[box] (pop) at (\cold,\rowpop) {Apply population rules};
+  \draw[arr] (seed) -- (hf);
+  \draw[arr] (hf) -- (polars);
+  \draw[arr] (polars) -- (pop);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(hf)(polars)(pop),
+          label={[stagelabel]north:1 Study population}] (f1) {};
+  \end{scope}
+
+  % ---- 2 Taught-tool extraction ----
+  \node[box] (ner) at (\cola,\rowner) {Relation extraction (labels under study)};
+  \node[box] (acc1) at (\colb,\rowner) {Manually labeled sample (precision, recall, agreement)};
+  \node[decision] (d1) at (\colc,\rowner) {Meets accuracy\\target?};
+  \node[box] (man1) at (\cold,\rowner) {Manual review of gaps};
+  \node[box] (m1) at (\cole,\rowner) {Merge automatic and manual results};
+  \node[box] (tune1) at (\colc,\rownertune) {Adjust labels or cutoff};
+  \draw[arr] (pop.south) -- ($(pop.south |- f1.south)+(0,-4mm)$) -| (ner.north);
+  \draw[arr] (ner) -- (acc1);
+  \draw[arr] (acc1) -- (d1);
+  \draw[arr] (d1.east) -- node[exit, above] {Yes} (man1.west);
+  \draw[arr] (d1.south) -- node[exit, right] {No} (tune1.north);
+  \draw[arr] (man1) -- (m1);
+  \draw[dasharr] (tune1.west) -| (ner.south);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(ner)(acc1)(d1)(man1)(m1)(tune1),
+          label={[stagelabel]north:2 Taught-tool extraction}] (f2) {};
+  \end{scope}
+
+  % ---- 3 Repository resolution ----
+  \node[decision] (known) at (\cola,\rowrepo) {Already linked\\to a repository?};
+  \node[box] (api) at (\colb,\rowrepo) {Versioning platform search};
+  \node[box] (reason) at (\colc,\rowrepo) {Repository ranking model};
+  \node[decision] (hit) at (\cold,\rowrepo) {Usable repository\\found?};
+  \node[box] (www) at (\cold,\rowweb) {Web search fallback};
+  \coordinate (hitjoin) at (\cole,\rowrepo);
+  \node[box] (skip) at (\cola,\rowreuse) {Reuse same repository};
+  \node[box] (tune2) at (\cold,\rowreuse) {Adjust cutoff};
+  \node[box] (acc2) at (\cole,\rowcheck) {Sample accuracy check};
+  \node[decision] (d2) at (\cold,\rowcheck) {Meets accuracy\\target?};
+  \node[box] (man2) at (\colc,\rowcheck) {Manual review of gaps};
+  \node[box] (join3) at (\colb,\rowcheck) {Continue};
+  \node[box] (m2) at (\cola,\rowcheck) {Merge automatic and manual results};
+  \draw[arr] (m1.south) -- ($(m1.south |- f2.south)+(0,-4mm)$) -| (known.north);
+  \draw[arr] (known.east) -- node[exit, above] {No} (api.west);
+  \draw[arr] (known.south) -- node[exit, right] {Yes} (skip.north);
+  \draw[arr] (api) -- (reason);
+  \draw[arr] (reason) -- (hit);
+  \draw[arr] (hit.north) -- node[exit, right] {No} (www.south);
+  \draw[arr] (hit.east) -- node[exit, above] {Yes} (hitjoin) -- (acc2.north);
+  \draw[semithick] (www.east) -| (hitjoin);
+  \draw[arr] (acc2) -- (d2);
+  \draw[arr] (d2.west) -- node[exit, above] {Yes} (man2.east);
+  \draw[arr] (d2.north) -- node[exit, right] {No} (tune2.south);
+  \draw[dasharr] (tune2.west) -| (reason.south);
+  \draw[arr] (man2) -- (join3);
+  \draw[arr] (skip.east) -| (join3.north);
+  \draw[arr] (join3) -- (m2);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(known)(api)(reason)(hit)(www)(skip)(tune2)(acc2)(d2)(man2)(join3)(m2),
+          label={[stagelabel]north:3 Repository resolution}] (f3) {};
+  \end{scope}
+
+  % ---- 4 License discovery ----
+  \node[box] (scan) at (\cola,\rowlic) {Scan repository root for license files};
+  \node[box] (acc3) at (\colb,\rowlic) {Sample accuracy check};
+  \node[decision] (d3) at (\colc,\rowlic) {Meets accuracy\\target?};
+  \node[box] (man3) at (\cold,\rowlic) {Manual review of gaps};
+  \node[box] (m3) at (\cole,\rowlic) {Merge automatic and manual results};
+  \node[box] (tune3) at (\colc,\rowlictune) {Adjust if needed};
+  \draw[arr] (m2) -- (scan);
+  \draw[arr] (scan) -- (acc3);
+  \draw[arr] (acc3) -- (d3);
+  \draw[arr] (d3.east) -- node[exit, above] {Yes} (man3.west);
+  \draw[arr] (d3.south) -- node[exit, right] {No} (tune3.north);
+  \draw[arr] (man3) -- (m3);
+  \draw[dasharr] (tune3.west) -| (scan.south);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(scan)(acc3)(d3)(man3)(m3)(tune3),
+          label={[stagelabel]north:4 License discovery}] (f4) {};
+  \end{scope}
+
+  % ---- 5 License freedom grouping ----
+  \node[box] (free) at (\cole,\rowfree) {Group by what the license allows or denies};
+  \draw[arr] (m3) -- (free);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(free),
+          label={[stagelabel]north:5 License freedom grouping}] {};
+  \end{scope}
+\end{tikzpicture}

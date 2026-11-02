@@ -1,0 +1,19 @@
+\section{Research Questions and Related Work}
+\label{sec:rqs}
+
+In this paper a \emph{tool} is a product that a skill teaches the agent to use, such as \textit{npm} in a React skill or Elasticsearch in an e-commerce skill.
+A tool is not the folder that hosts the skill, the repository that publishes the skill, or a link that credits where the skill came from.
+
+\noindent\textbf{RQ1.} \emph{Which tools appear most often in skill files?}
+
+\noindent\textbf{RQ2.} \emph{How are the projects that publish those tools licensed, once each license is grouped by the freedom it gives?}
+
+The tools found for RQ1 are the input to RQ2.
+A tool name carries no license of its own, so for RQ2 the unit of analysis is the project that publishes a taught tool.
+The license on the repository that hosts a skill describes the skill author's project rather than the tool, so we keep it as a separate field and do not use it for RQ2.
+A mention in a skill file does not show that anyone reviewed or followed the tool's license, so RQ2 describes what skills point to rather than how people comply.
+
+Xing et al.\ study what agent skills contain and do~\cite{10.1145/3770855.3818652}.
+Arceo and Narsing study how tools are exposed and secured in agent systems~\cite{10.1145/3786335.3813145}.
+Stalnaker et al.\ surveyed 574 developers about licensing and copyright issues that arise from generative AI for software development~\cite{stalnaker2026developerperspectives}.
+None of these studies reports the licenses of the projects behind the tools that skills name.

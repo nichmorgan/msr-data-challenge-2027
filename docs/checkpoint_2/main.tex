@@ -1,43 +1,45 @@
-\documentclass[10pt,conference]{IEEEtran}
+\documentclass[11pt]{article}
 
+\usepackage[margin=1in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{cite}
-\usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
-\usepackage{textcomp}
-\usepackage{xcolor}
+\usepackage{booktabs}
 \usepackage{url}
 \usepackage{hyperref}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds,calc}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{titling}
+\setlength{\droptitle}{-5em}
+\posttitle{\par\end{center}\vspace{-0.8em}}
+\predate{\begin{center}\large\vspace{-0.8em}}
+\postdate{\par\end{center}\vspace{-1.2em}}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt,leftmargin=1.5em}
+\titlespacing*{\section}{0pt}{2.2ex plus .5ex}{1ex}
+\titlespacing*{\subsection}{0pt}{1.6ex plus .4ex}{0.6ex}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
 
 \graphicspath{{assets/}}
 
-\begin{document}
-
 \title{MSR Data Challenge: GitSkills Checkpoint 2}
-
-\author{
-    \IEEEauthorblockN{Morgan Nicholson, Samuel Bodenheimer, Aidan Sullivan}
-    \IEEEauthorblockA{
-        School of Informatics, Computing and Cyber Systems\\
-        CS599: Open Source Software\\
-        Dr.\ Igor Steinmacher\\
-        November 3, 2026
-    }
+\author{%
+  Morgan Nicholson, Samuel Bodenheimer, and Aidan Sullivan\\
+  School of Informatics, Computing and Cyber Systems\\
+  CS599: Open Source Software, Dr.\ Igor Steinmacher
 }
+\date{November 3, 2026}
+
+\begin{document}
 
 \maketitle
 
 \input{sections/initial_research}
 \input{sections/technical_details}
 \input{sections/pilot_findings}
-\input{sections/progress}
 \input{sections/remaining_work}
-
-% Remove comments when some references are used
-% \bibliographystyle{IEEEtran}
-% \bibliography{refs}
 
 \end{document}

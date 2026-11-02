@@ -1,0 +1,12 @@
+\section{Limitations}
+\label{sec:limitations}
+
+The main limitation is that no extraction output has been validated against human labels.
+The validation sample has not been labeled, so no precision, recall, or agreement is reported, and both cutoffs are starting points rather than tuned values.
+The entity and relation labels for the relation model have not been selected either.
+The larger model runs read companion text rather than the skill body and clipped each text to its first 384 characters, and like the data checks they ran on the full tables rather than on the study population.
+Their spans therefore show the kinds of errors to expect, not how often those errors occur in the population.
+
+Another important limitation is deliberate and comes from the original plan.
+We will check only a random sample of the population that the pipeline processes, so the precision and recall we report will be estimates from that sample, and errors in the rows nobody reviews will remain in the final counts.
+We accept this to balance the manual effort against an error level we can still trust, because reviewing every row manually would cost about as much as never automating the pipeline, as Section~\ref{sec:validation} explains.

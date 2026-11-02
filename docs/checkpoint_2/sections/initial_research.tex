@@ -1,1 +1,30 @@
-\section{Initial Research}
+\section{Initial Research and Research Questions}
+
+This checkpoint reports our progress on the MSR~2027 GitSkills mining challenge, which uses GitSkills, a July~2026 collection of public GitHub skill files in Anthropic's agent-skill format.\footnote{\url{https://arxiv.org/abs/2608.10906}}
+A skill file tells an agent how to carry out a task, and its instructions can name outside products, which is what this study counts.
+We work from release version~3 of 11~September~2026, and our code and notebooks are kept in the study repository.\footnote{\url{https://github.com/nichmorgan/msr-data-challenge-2027}}
+
+\subsection{Research questions}
+
+Checkpoint~1 asked three questions, but two of them measured the same step, since the study cannot assign a license to a tool name until it knows the project that publishes that tool, so we merged those two and now ask the questions below.
+
+\begin{itemize}
+    \item Which tools appear most often in skill files?
+    \item How are the projects that publish those tools licensed, once each license is grouped by the freedom it gives?
+\end{itemize}
+
+\subsection{Study population}
+
+To keep the population small and well defined, a skill stays in the study only when every rule below holds, whatever its body length, although the checks in this report used the full tables.
+
+\begin{itemize}
+    \item The text is counted once, so copies of the same skill are left out.
+    \item The header metadata at the top of the file is valid.
+    \item The file is named \texttt{SKILL.md} or \texttt{skill.md}, and its body is plain text rather than JSON or CSS.
+    \item The file sits in the usual skill folder under \texttt{.claude/skills} or in another skills directory.
+\end{itemize}
+
+\subsection{Data and licenses}
+
+The collection has four tables, covering the skill files, the repositories that contain them, the files bundled with each representative skill, and notes on how the collection was gathered, while commit history is stored on a fetched skill row rather than in a table of its own.
+Extraction reads only the skill body, and because the license string on a skill's repository belongs to that hosting project, the second question needs the project that publishes each taught tool instead, while a named service with no such project stays unresolved.

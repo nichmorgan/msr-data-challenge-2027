@@ -1,0 +1,62 @@
+\section{Future Work}
+\label{sec:future}
+
+The analyses below have not been completed.
+Together with the extraction in Section~\ref{sec:extraction}, they form the pipeline in Fig.~\ref{fig:pipeline-simple}, and the appendix gives the extended flowchart with its human checks, manual gap filling, and merges.
+An extraction rule settled too early would count the wrong tools for the first question and send the wrong set into the second, so they will run in the order below.
+
+\begin{figure}[!t]
+  \centering
+  \input{assets/pipeline-simplified}
+  \caption{High-level analysis pipeline.
+    The appendix gives the extended diagram with human checks, manual gap filling, and merges.}
+  \label{fig:pipeline-simple}
+\end{figure}
+
+\subsection{Relation extraction}
+\label{sec:relation}
+
+Add a relation extraction step that links each tool to the organization that publishes it, when the text names one.
+Such a link could help confirm that the tool is the central subject of the skill, and the organization could then help find the repository that owns the tool.
+This step would require a relation model like the one tried in Section~\ref{sec:results}.
+Its entity and relation labels should filter false positives.
+A first set would be \textit{tool}, \textit{organization}, and \textit{from\_organization}, and other label sets will be compared before one is fixed.
+The chosen labels will define the extraction setup that the validation sample checks.
+
+\subsection{Manual validation}
+
+Label the validation sample, and record precision, recall, agreement, and the errors.
+The gate, how its sample is drawn, and why we accept a bounded residual error are described in Section~\ref{sec:validation}.
+
+\subsection{Full extraction}
+
+Extract tools from the full population.
+Each tool will be counted once per distinct skill file, and names will be folded without regard to case, with the most common original spelling kept as the label.
+After the quality gate, empty or unresolved rows will be filled by manual analysis and merged before repository resolution.
+Together these steps will give the frequency list for the first question.
+
+\subsection{Repositories, licenses, and freedom groups}
+
+Find the repository for each confirmed tool, read its license, and group licenses by freedom.
+We will resolve tools one at a time and reuse a project when a tool is already linked to one.
+Otherwise we will query versioning platforms such as GitHub or GitLab and use a reasoning model, still to be chosen, to select the owning repository from the returned candidates, with open web search as a fallback.
+A repository address inside a skill can name the skill's own publisher or the source it was copied from rather than the taught tool, so such an address will not be taken as the answer on its own.
+The same quality gate, manual gap filling, and merge will close this stage before license discovery.
+
+For each resolved repository we will scan the repository root for conventional license file names, such as \textit{LICENSE} and \textit{COPYING}, read the license identity, and link it to the tool.
+Gaps will again go through sample validation when a model helps, then manual review, then a merge.
+The license string stored for a skill's hosting repository will not be used here, because it describes the project that hosts the skill.
+
+Confirmed licenses will be grouped by \emph{freedom}, meaning what the license allows or denies doing with the tool, rather than by SPDX\footnote{Software Package Data Exchange (SPDX) provides short standard license identifiers such as MIT and Apache-2.0. See \url{https://spdx.org/licenses/}.} string frequency alone.
+These groups will answer the second question.
+A named service with no publishing project will stay unresolved, and unresolved cases will be recorded rather than guessed.
+
+These stages carry their own risks.
+The repository ranking model is still to be chosen, the search may select the wrong repository, a scan of the repository root can miss a license kept elsewhere, and an external service may answer differently on a rerun when it does not honor the seed.
+
+\subsection{Answers}
+
+Answer the two questions.
+Both answers will go in Section~\ref{sec:results}.
+The first will be the list of tools ranked by the number of distinct skill files that teach them, and the second will be the share of publishing projects in each freedom group, reported next to the number of tools that stay unresolved.
+The units of analysis follow the pipeline, so the first question will use distinct skill texts and the tools they teach, and the second will use resolved publishing projects that have a freedom group.

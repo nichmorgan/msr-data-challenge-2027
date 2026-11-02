@@ -1,0 +1,30 @@
+\section{Dataset}
+\label{sec:dataset}
+
+GitSkills was built by Destefanis, Graziotin, Vaccargiu, and Ortu from public GitHub repositories during July 2026~\cite{gitskills2027}.
+It holds 3{,}797{,}117 skill-file rows from 282{,}200 repositories.
+Each row is one occurrence of a file, so a skill copied into several repositories appears once per copy.
+We use release version~3, published on 11~September 2026, and we downloaded it once and kept it as a local copy, so later updates to the public collection stay out of the analysis.
+The dataset is shared under the Creative Commons Attribution 4.0 International License, which allows sharing and adaptation as long as proper attribution is given.
+
+The collection has four tables.
+
+\begin{itemize}
+  \item \emph{Skill files}, with one row per file occurrence.
+  \item \emph{Repositories}, with metadata such as star counts and the license string of each repository that hosts a skill.
+  \item \emph{Companion files}, which are the files bundled with each representative skill.
+  \item \emph{Collection notes}, which record how the files were gathered.
+\end{itemize}
+
+Commit history is stored on a fetched skill row rather than in a table of its own.
+
+A skill-file row is identified by its repository name (\textit{repo\_full\_name}) and its path within that repository (\textit{path}).
+The fields our study relies on are the file name (\textit{filename}), the location class (\textit{location\_class}), which separates the usual \textit{.claude/skills} folder from other skills directories and from all other places, and a content hash (\textit{file\_sha}) that identical copies share.
+A flag (\textit{dedup\_primary}) marks one representative row for each distinct text, and only that row stores the text itself (\textit{content}).
+Another flag (\textit{frontmatter\_valid}) records whether the header metadata at the top of the file is valid.
+Skill rows join the repository table on the repository name, which supplies the hosting repository's star count and license string.
+
+Companion-file rows belong to a representative skill and link to it through its path.
+Each one names a bundled file or folder (\textit{entry\_name}, \textit{entry\_type}), gives its size and hash (\textit{entry\_size}, \textit{entry\_sha}), and, when the text was fetched, stores it in \textit{content} up to 100~KB.
+In this paper we call that stored text \emph{companion text}.
+The unit of analysis for both questions starts from one distinct skill text, as Section~\ref{sec:method} explains.
