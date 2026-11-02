@@ -48,7 +48,7 @@
 
   % ---- 2 Taught-tool extraction ----
   \node[box, below=14mm of pop] (ner) {Relation extraction (labels under study)};
-  \node[box, below=of ner] (acc1) {Human-marked sample (precision, recall, agreement)};
+  \node[box, below=of ner] (acc1) {Manually labeled sample (precision, recall, agreement)};
   \node[decision, below=of acc1] (d1) {Meets accuracy target?};
   \coordinate[below=6mm of d1] (d1f);
   \node[box, below left=10mm and 14mm of d1f] (tune1) {Adjust labels or cutoff};
