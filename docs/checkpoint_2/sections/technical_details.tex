@@ -1,1 +1,24 @@
-\section{Technical Details}
+\section{Work Completed and Technical Details}
+
+\subsection{Done so far}
+
+We downloaded the published release once and kept it as a local copy, so later updates to the public collection stay out of the analysis, and we analyze its tables with Python and Polars.
+Names are extracted with GLiNER,\footnote{\url{https://arxiv.org/abs/2311.08526}} and the finished work covers the items below.
+
+\begin{itemize}
+  \item A frozen local copy of the collection.
+  \item Checks of star counts, host-repository license labels, and the text stored beside a skill.
+  \item A label-only model run on 500 companion texts.
+\end{itemize}
+
+Every notebook sets one shared random seed when it loads the tables, and the 500-text draw uses that seed, so a rerun returns the same texts, each still tied to the file it came from.
+The twelve-text trial in the last section drew its sample with its own fixed seed.
+Dated PDF exports of the explore notebooks are kept in \path{scripts/exports}, so their outputs can be read without running the notebooks, which may still change.
+The paper draft lists each remaining analysis as future work, and once an analysis is done it moves into the body of the paper as finished work.
+
+\subsection{Score cutoff and accuracy}
+
+The model gives each hit a score, and a cutoff on that score decides which hits we keep.
+We are still studying how that cutoff relates to accuracy, and for now we test the simplest pairing, so a cutoff of~$0.8$ is checked against an accuracy near~$80\%$, although that pairing is only an arbitrary starting point.
+To measure accuracy, people will mark the taught tools in a random sample of the population, drawn with the shared seed and sized before anyone sees the model output.
+We will report precision, the share of extracted tools that are truly taught tools, and recall, the share of truly taught tools the model finds, along with agreement on a subset that two people mark, but no such number appears here because that sample has not been marked yet.

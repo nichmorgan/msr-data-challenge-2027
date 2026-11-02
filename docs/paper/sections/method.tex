@@ -1,0 +1,29 @@
+\section{Method}
+\label{sec:method}
+
+We analyze the local copy of GitSkills with Python and Polars DataFrames.
+Every notebook sets one shared random seed when it loads the tables, and each sampled draw we report uses a fixed seed, so a rerun returns the same rows.
+
+\subsection{Study population}
+\label{sec:population}
+
+To keep the population small and well defined, a skill stays in the study only when every rule below holds, whatever its body length.
+
+\begin{itemize}
+  \item The text is counted once, so copies of the same skill are left out (\textit{dedup\_primary}).
+  \item The header metadata at the top of the file is valid (\textit{frontmatter\_valid}).
+  \item The file is named \textit{SKILL.md} or \textit{skill.md}, and its body is plain text rather than JSON or CSS.
+  \item The file sits in the usual skill folder under \textit{.claude/skills} or in another skills directory (\textit{location\_class}).
+\end{itemize}
+
+The data checks in Section~\ref{sec:results} used the full tables, so these rules were not yet applied to them.
+
+\subsection{Taught-tool extraction}
+\label{sec:extraction}
+
+Extraction reads only the skill body and never the companion text, and it skips a body that is not plain text.
+We extract names with GLiNER~\cite{zaratiana2023glinergeneralistmodelnamed}, which gives each hit a score, and a cutoff on that score decides which hits we keep.
+Label-only extraction uses a cutoff of~$0.8$, which is only an arbitrary starting point for the check described in Section~\ref{sec:validation}.
+
+The label-only run in Section~\ref{sec:results} shows that labels alone accept false positives, such as the skill filename or GitHub inside an address.
+Improvements to this step are proposed as future work in Section~\ref{sec:relation}.

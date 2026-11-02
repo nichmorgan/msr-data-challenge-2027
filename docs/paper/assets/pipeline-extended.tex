@@ -1,0 +1,146 @@
+% Extended analysis pipeline: one vertical column of five stage frames.
+% Decision exits leave from the south of each diamond; retries use an outer left bus.
+\begin{tikzpicture}[
+  font=\small\sffamily,
+  every node/.style={align=center},
+  box/.style={
+    draw,
+    rounded corners=1.5pt,
+    inner sep=4pt,
+    text width=3.6cm
+  },
+  decision/.style={
+    draw,
+    diamond,
+    aspect=2.2,
+    inner sep=1pt,
+    text width=2.8cm,
+    align=center
+  },
+  stageframe/.style={
+    draw,
+    rounded corners=2pt,
+    inner sep=8pt,
+    thick
+  },
+  stagelabel/.style={
+    font=\small\sffamily\bfseries,
+    anchor=south east,
+    xshift=-1.5mm
+  },
+  arr/.style={-{Stealth[length=1.8mm]}, semithick},
+  dasharr/.style={-{Stealth[length=1.8mm]}, semithick, densely dashed},
+  node distance=9mm and 16mm
+]
+  \node[box] (seed) {Fixed random seed};
+
+  % ---- 1 Study population ----
+  \node[box, below=8mm of seed] (hf) {Frozen copy of release 3};
+  \node[box, below=of hf] (polars) {Load with Polars};
+  \node[box, below=of polars] (pop) {Apply population rules};
+  \draw[arr] (seed) -- (hf);
+  \draw[arr] (hf) -- (polars);
+  \draw[arr] (polars) -- (pop);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(hf)(polars)(pop),
+          label={[stagelabel]north:1 Study population}] {};
+  \end{scope}
+
+  % ---- 2 Taught-tool extraction ----
+  \node[box, below=14mm of pop] (ner) {Relation extraction (labels under study)};
+  \node[box, below=of ner] (acc1) {Human-marked sample (precision, recall, agreement)};
+  \node[decision, below=of acc1] (d1) {Meets accuracy target?};
+  \coordinate[below=6mm of d1] (d1f);
+  \node[box, below left=10mm and 14mm of d1f] (tune1) {Adjust labels or cutoff};
+  \node[box, below right=10mm and 14mm of d1f] (man1) {Manual review of gaps};
+  % join bar below both branch boxes
+  \path (man1.south -| d1f) ++(0,-8mm) coordinate (d1join);
+  \node[box, below=6mm of d1join] (m1) {Merge automatic and manual results};
+  \draw[arr] (pop) -- (ner);
+  \draw[arr] (ner) -- (acc1);
+  \draw[arr] (acc1) -- (d1);
+  \draw[arr] (d1.south) -- (d1f);
+  \draw[arr] (d1f) -| (tune1.north) node[pos=0.2, font=\scriptsize] {No};
+  \draw[arr] (d1f) -| (man1.north) node[pos=0.2, font=\scriptsize] {Yes};
+  \draw[arr] (man1.south) -- ++(0,-4mm) -| (d1join) -- (m1.north);
+  \draw[dasharr] (tune1.west) -- ++(-2.5cm,0) |- (ner.west);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(ner)(acc1)(d1)(tune1)(man1)(m1),
+          label={[stagelabel]north:2 Taught-tool extraction}] {};
+  \end{scope}
+
+  % ---- 3 Repository resolution ----
+  \node[decision, below=14mm of m1] (known) {Already linked to a repository?};
+  \coordinate[below=6mm of known] (knownf);
+  \node[box, below left=10mm and 14mm of knownf] (skip) {Reuse same repository};
+  \node[box, below right=10mm and 14mm of knownf] (api) {Versioning platform search};
+  \path (api.south -| knownf) ++(0,-8mm) coordinate (knownjoin);
+  \node[box, below=6mm of knownjoin] (reason) {Repository ranking model};
+  \node[decision, below=of reason] (hit) {Usable repository found?};
+  \coordinate[below=6mm of hit] (hitf);
+  \node[box, below left=10mm and 14mm of hitf] (www) {Web search fallback};
+  \path (www.south -| hitf) ++(0,-8mm) coordinate (hitjoin);
+  \node[box, below=6mm of hitjoin] (acc2) {Sample accuracy check};
+  \node[decision, below=of acc2] (d2) {Meets accuracy target?};
+  \coordinate[below=6mm of d2] (d2f);
+  \node[box, below left=10mm and 14mm of d2f] (tune2) {Adjust cutoff};
+  \node[box, below right=10mm and 14mm of d2f] (man2) {Manual review of gaps};
+  \path (man2.south -| d2f) ++(0,-8mm) coordinate (d2join);
+  \node[box, below=6mm of d2join] (join3) {Continue};
+  \node[box, below=of join3] (m2) {Merge automatic and manual results};
+  \draw[arr] (m1) -- (known);
+  \draw[arr] (known.south) -- (knownf);
+  \draw[arr] (knownf) -| (skip.north) node[pos=0.2, font=\scriptsize] {Yes};
+  \draw[arr] (knownf) -| (api.north) node[pos=0.2, font=\scriptsize] {No};
+  \draw[arr] (api.south) -- ++(0,-4mm) -| (knownjoin) -- (reason.north);
+  % skip waits and rejoins only at Continue (outer right bus, clears long path)
+  \draw[arr] (reason) -- (hit);
+  \draw[arr] (hit.south) -- (hitf);
+  \draw[arr] (hitf) -| (www.north) node[pos=0.2, font=\scriptsize] {No};
+  \draw[arr] (hitf) -- (hitjoin) -- (acc2.north)
+    node[pos=0.15, right, font=\scriptsize] {Yes};
+  \draw[arr] (www.south) -- ++(0,-4mm) -| (hitjoin);
+  \draw[arr] (acc2) -- (d2);
+  \draw[arr] (d2.south) -- (d2f);
+  \draw[arr] (d2f) -| (tune2.north) node[pos=0.2, font=\scriptsize] {No};
+  \draw[arr] (d2f) -| (man2.north) node[pos=0.2, font=\scriptsize] {Yes};
+  \draw[arr] (man2.south) -- ++(0,-4mm) -| (d2join) -- (join3.north);
+  % skip: outer left bus (past retry offset) down to Continue; clears reason/hit/www
+  \draw[arr] (skip.west) -- ++(-3.5cm,0) |- (join3.west);
+  \draw[arr] (join3) -- (m2);
+  \draw[dasharr] (tune2.west) -- ++(-2.5cm,0) |- (reason.west);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(known)(skip)(api)(reason)(hit)(www)(acc2)(d2)(tune2)(man2)(join3)(m2),
+          label={[stagelabel]north:3 Repository resolution}] {};
+  \end{scope}
+
+  % ---- 4 License discovery ----
+  \node[box, below=14mm of m2] (scan) {Scan repository root for license files};
+  \node[box, below=of scan] (acc3) {Sample accuracy check};
+  \node[decision, below=of acc3] (d3) {Meets accuracy target?};
+  \coordinate[below=6mm of d3] (d3f);
+  \node[box, below left=10mm and 14mm of d3f] (tune3) {Adjust if needed};
+  \node[box, below right=10mm and 14mm of d3f] (man3) {Manual review of gaps};
+  \path (man3.south -| d3f) ++(0,-8mm) coordinate (d3join);
+  \node[box, below=6mm of d3join] (m3) {Merge automatic and manual results};
+  \draw[arr] (m2) -- (scan);
+  \draw[arr] (scan) -- (acc3);
+  \draw[arr] (acc3) -- (d3);
+  \draw[arr] (d3.south) -- (d3f);
+  \draw[arr] (d3f) -| (tune3.north) node[pos=0.2, font=\scriptsize] {No};
+  \draw[arr] (d3f) -| (man3.north) node[pos=0.2, font=\scriptsize] {Yes};
+  \draw[arr] (man3.south) -- ++(0,-4mm) -| (d3join) -- (m3.north);
+  \draw[dasharr] (tune3.west) -- ++(-2.5cm,0) |- (scan.west);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(scan)(acc3)(d3)(tune3)(man3)(m3),
+          label={[stagelabel]north:4 License discovery}] {};
+  \end{scope}
+
+  % ---- 5 License freedom grouping ----
+  \node[box, below=14mm of m3] (free) {Group by what the license allows or denies};
+  \draw[arr] (m3) -- (free);
+  \begin{scope}[on background layer]
+    \node[stageframe, fit=(free),
+          label={[stagelabel]north:5 License freedom grouping}] {};
+  \end{scope}
+\end{tikzpicture}

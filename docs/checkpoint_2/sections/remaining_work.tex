@@ -1,1 +1,24 @@
-\section{Remaining Work}
+\section{Remaining Work and Responsibilities}
+
+\subsection{Relation model}
+
+Relation extraction is still in progress, because we think a link between a tool and the organization that publishes it can filter false positives such as the skill filename or GitHub inside an address, so we are looking for entity and relation labels that make that filter possible.
+Our first try ran GLiNER Relex large, version~0.5,\footnote{Model card at \url{https://huggingface.co/knowledgator/gliner-relex-large-v0.5}.} on the same 500 companion texts at a cutoff of~$0.6$, and while it linked a tunnel setting to Cloudflare as we would want, it also tied \texttt{python3} to a nearby word and a copied repository address to GitHub.
+A second trial on twelve short skill texts, whose length limit applies only to that trial, still links the wrong pairs, and since we read those rows by hand, they show where extraction fails but not how often.
+
+\subsection{Next steps}
+
+Because an extraction rule settled too early would count the wrong tools for the first question and send the wrong set into the second, the remaining steps run in the order below, which the December~3 presentation and the December~9 paper also follow.
+
+\begin{itemize}
+  \item Choose entity and relation labels that filter false positives.
+  \item Mark the human sample, and record precision, recall, agreement, and the errors.
+  \item Extract tools from the full population.
+  \item Find the repository for each confirmed tool, read its license, and group licenses by freedom.
+  \item Answer the two questions.
+\end{itemize}
+
+\subsection{Responsibilities}
+
+Aidan wrote the questions, the related work, an early look at the data, and the first load of the tables, while Samuel set up the shared Python environment and wrote the project plan.
+Morgan wrote the method, the check on model scores, and the local copy of the collection, and all three of us share the remaining analysis, the human sample, and both December deliverables.
