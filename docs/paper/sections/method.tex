@@ -34,8 +34,8 @@ Improvements to this step are proposed as future work in Section~\ref{sec:relati
 
 A human check will act as a quality gate for every step that relies on a model, which are taught-tool extraction, the choice of an owning repository when a tool is not already linked, and license gaps when a model helps fill them.
 
-The authors will label the taught tools in a random sample of the population, drawn with the shared seed and sized before anyone sees the model output.
-We will report precision, the share of extracted tools that are truly taught tools, and recall, the share of truly taught tools the model finds, along with inter-rater agreement on a subset that two authors label independently.
+We will label the taught tools in a random sample of the population, drawn with the shared seed and sized before anyone sees the model output.
+From those labels we will report precision, the share of extracted tools that are truly taught tools, and recall, the share of truly taught tools the model finds, along with inter-rater agreement on a subset that two authors label independently.
 If a stage falls short, we will change its labels or cutoff and run it again.
 Once it meets the target accuracy set in Section~\ref{sec:extraction}, we will fill the remaining gaps manually, merge the automatic and manual results while dropping entities that do not exist, and only then move on.
 Repository resolution and model-assisted license steps, described in Section~\ref{sec:future}, will use the same gate on their own samples.
