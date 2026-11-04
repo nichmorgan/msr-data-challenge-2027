@@ -48,6 +48,7 @@ Gaps will again go through sample validation when a model helps, then manual rev
 The license string stored for a skill's hosting repository will not be used here, because it describes the project that hosts the skill.
 
 Confirmed licenses will be grouped by \emph{freedom}, meaning what the license allows or denies doing with the tool, rather than by SPDX\footnote{Software Package Data Exchange (SPDX) provides short standard license identifiers such as MIT and Apache-2.0. See \url{https://spdx.org/licenses/}.} string frequency alone.
+We will search published sources for a freedom category mapping and fix that mapping before any license is placed in a group.
 These groups will answer the second question.
 A named service with no publishing project will stay unresolved, and unresolved cases will be recorded rather than guessed.
 

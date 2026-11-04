@@ -1,0 +1,147 @@
+\section{Action points}
+\label{sec:action-points}
+
+These entries restate the raw notes in \path{raw/f1.md}\footnote{\url{https://github.com/nichmorgan/msr-data-challenge-2027/blob/main/docs/checkpoint_2/feedbacks/raw/f1.md}} and \path{raw/f2.md}\footnote{\url{https://github.com/nichmorgan/msr-data-challenge-2027/blob/main/docs/checkpoint_2/feedbacks/raw/f2.md}}.
+A recommendation stays a recommendation, an observation stays an observation, and a reviewer’s uncertainty stays uncertainty.
+Each decision records whether the current paper already covers the point.
+Adopted means the draft changes in the way the reasoning describes.
+Skipped means the next step waits on a discussion that is still underway.
+Any comment that is not about \path{docs/paper/}, \path{scripts/}, or \path{docs/checkpoint_2/} was skipped.
+Each note has a stable code, assigned in document order, and the code stays if the note later moves.
+
+\subsection*{Research questions}
+
+\textit{Checkpoint section} \path{sections/initial_research.tex}. \textit{Paper section} II.
+
+\subsubsection*{AP-01 Counting unit}
+\phantomsection\label{ap:01}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] The counting unit needs a sentence in the paper. Once per distinct skill text is a defensible choice, but a skill copied into 5,000 repositories teaches its tool to 5,000 agents, and a template that stamps the same catalog everywhere will either dominate the ranking or disappear from it, depending on the unit. Report per distinct text and per repository next to each other. If the rankings differ, that is worth a paragraph on its own.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] RQ1 asks which tools appear most often in skill files. RQ2 asks how the projects that publish those tools are licensed, once each license is grouped by freedom. Neither question asks for a second count per hosting repository or for two rankings set side by side. The paper already counts each tool once per distinct skill text, and the unit for RQ2 is the publishing project.
+\end{description}
+
+\subsection*{Related work}
+
+\textit{Paper section} Research Questions and Related Work.
+
+\subsubsection*{AP-02 Closer related work}
+\phantomsection\label{ap:02}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] Closer related work: Hong et al. (arXiv:2607.01456) and Zhang et al. (arXiv:2608.08453) on what \texttt{SKILL.md} files contain; Jia et al. (arXiv:2607.01136), who trace what skills depend on and call, which is next door to the extraction step; and the license-mining literature (Vendome et al. on license evolution, for one) for RQ2.
+  \item[Source] f1
+  \item[Decision] Skipped
+  \item[Reasoning] The authors need to review Hong et al., Zhang et al., Jia et al., and Vendome et al. before adding them. We thank the reviewer for the suggestion, and we will evaluate it for the next versions.
+\end{description}
+
+\subsection*{Method}
+
+\textit{Checkpoint section} \path{sections/technical_details.tex}. \textit{Paper section} Method.
+
+\subsubsection*{AP-03 Seeded skill-body sample}
+\phantomsection\label{ap:03}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] The pilot has not touched the input the study will measure. Both model runs read companion text, and the twelve-skill trial was read by eye. Draw a seeded sample of skill bodies using the population rules, run the label-only model, and hand-label 50 of the hits. A rough precision estimate on that input would do it.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] Future Work already labels the validation sample and records precision, recall, and agreement. Limitations says that check has not run. f2 asks for the same pilot on skill bodies. The draft keeps that check as future work.
+\end{description}
+
+\subsubsection*{AP-04 Chunk skill bodies before labeling}
+\phantomsection\label{ap:04}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] The 384-character clip may hit the 384-token limit on the full run. A skill body averages several thousand characters and names tools throughout, so without chunking the extractor reads only the first paragraph and misses most of what it is meant to count. Maybe chunk the body, run each chunk, and merge hits per skill. That is a few lines of code, but it needs to be in place before the validation sample is labeled, or the recall measured will not be the recall obtained.
+  \item[Source] f1
+  \item[Decision] Skipped
+  \item[Reasoning] Chunking is required if a model reads the skill body. The authors are discussing labeling by hand instead of using a model.\footnote{Section~\ref{sec:reflection}} If the work continues with a model, chunking will be a must have.
+\end{description}
+
+\subsubsection*{AP-05 Cutoff, sample size, and agreement subset}
+\phantomsection\label{ap:05}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] A score cutoff of 0.8 and a precision of 80\% are different metrics, and nothing ties them together. After the validation sample is labeled, sweep the cutoff, plot precision and recall against it, and pick the cutoff from the plot. State the sample size now, before labeling. Do the same for the agreement subset.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] The sweep, the precision and recall plot, and the sample sizes are the manual-validation stage. Future Work already labels that sample and records precision, recall, agreement, and the errors. Method already reruns a stage with a new cutoff when it falls short. Limitations says those rates are unreported because the sample has not been labeled, and the appendix leaves the sample size undecided.
+\end{description}
+
+\subsubsection*{AP-06 Sample rows in the notebook}
+\phantomsection\label{ap:06}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] In \texttt{explore\_entities.ipynb}, the 500-row draw samples each column separately with the same seed. It happens to line up, but sample rows instead.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] The 500-row draw is in \texttt{explore\_relations.ipynb}, not \texttt{explore\_entities.ipynb}. It is \path{select(pl.all().sample(n=500, seed=SEED))}. That samples each column on its own, and the same seed draws the same positions. On Polars 2.1.0 the draw matches \texttt{DataFrame.sample} with that seed, including order. Dropping the seed crosses the columns, and \texttt{set\_random\_seed} does not stop that. This Polars version has no \texttt{LazyFrame.sample}, so the expression is how the lazy scan samples rows. No notebook change.
+\end{description}
+
+\subsubsection*{AP-07 Shorter method sentences}
+\phantomsection\label{ap:07}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] Some sentences in the method run long enough that they had to be re-read multiple times. Shorter ones would help MSR reviewers.
+  \item[Source] f1
+  \item[Decision] Adopted
+  \item[Reasoning] We will rewrite Method with shorter and clearer sentences.
+\end{description}
+
+\subsection*{RQ2 resolution}
+
+\textit{Paper sections} Method and Future Work.
+
+\subsubsection*{AP-08 Resolving every name may stall the plan}
+\phantomsection\label{ap:08}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] RQ2, as written, is where the plan could stall. Resolving every tool name to a publishing repository using a reasoning model plus web search is slow, hard to rerun (the rerun problem is already noted in the work), and the long tail of names is probably in the thousands.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] Future Work already resolves each confirmed tool one at a time and records that an external service can answer differently on a rerun. The draft keeps that stage as written.
+\end{description}
+
+\subsubsection*{AP-09 Resolve the top N tools}
+\phantomsection\label{ap:09}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] Resolve the top N tools by skill count and report what share of all mentions they cover.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] Future Work resolves each confirmed tool and answers the second question with the share of publishing projects in each freedom group. A top-N resolution and the share of mentions those tools cover are part of that unrun stage. The draft leaves them there.
+\end{description}
+
+\subsubsection*{AP-10 Deterministic license sources first}
+\phantomsection\label{ap:10}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] Use deterministic sources before any model. PyPI and npm return a license field through their APIs, and GitHub’s license endpoint returns an SPDX ID.
+  \item[Source] f1
+  \item[Decision] Not adopted
+  \item[Reasoning] A PyPI, npm, or GitHub license lookup returns a stable field only after the package or repository is already known. Entity extraction is the uncertain step, and the name it produces is not a registry identifier. The authors are considering labeling tools by hand because of that.\footnote{Section~\ref{sec:reflection}} Those APIs would leave the search tied to a generated query, so they stay out of the plan.
+\end{description}
+
+\subsubsection*{AP-11 Write the freedom mapping before seeing the data}
+\phantomsection\label{ap:11}
+
+\begin{description}[leftmargin=0pt]
+  \item[Point] Write the license-to-freedom mapping down before seeing the data, using the OSI or FSF definitions it follows.
+  \item[Source] f1
+  \item[Decision] Adopted
+  \item[Reasoning] We will search published sources for a freedom category mapping, and we will fix that mapping before any license is placed in a group.
+\end{description}
+
+\subsection*{Set aside}
+\phantomsection\label{ap:set-aside}
+
+These points are not changes to the paper.
+
+\begin{itemize}
+  \item \textbf{AP-12.} Dates on the remaining-work list belong to the checkpoint report.
+  \item \textbf{AP-13.} The report length belongs to the checkpoint page limit.
+  \item \textbf{AP-14.} The README note is about the README still listing three research questions.
+\end{itemize}

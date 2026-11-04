@@ -2,7 +2,7 @@
 \label{sec:method}
 
 We analyze the local copy of GitSkills with Python and Polars DataFrames.
-Every notebook sets one shared random seed when it loads the tables, and each sampled draw we report uses a fixed seed, so a rerun returns the same rows.
+Each notebook sets one shared random seed when it loads the tables, and every sampled draw we report uses a fixed seed, so a rerun returns the same rows.
 
 \subsection{Study population}
 \label{sec:population}
@@ -21,27 +21,24 @@ The data checks in Section~\ref{sec:results} used the full tables, so these rule
 \subsection{Taught-tool extraction}
 \label{sec:extraction}
 
-Extraction reads only the skill body and never the companion text, and it skips a body that is not plain text.
-We extract names with GLiNER~\cite{zaratiana2023glinergeneralistmodelnamed}, which gives each hit a score, and a cutoff on that score decides which hits we keep.
-For taught-tool extraction, we set the score cutoff at~$0.8$ and the target accuracy at~$80\%$, and both values are arbitrary choices for this paper.
-The manual validation in Section~\ref{sec:validation} checks that cutoff.
-
-The label-only run in Section~\ref{sec:results} shows that labels alone accept false positives, such as the skill filename or GitHub inside an address.
-Improvements to this step are proposed as future work in Section~\ref{sec:relation}.
+Extraction reads only the skill body, never the companion text.
+We extract names with GLiNER~\cite{zaratiana2023glinergeneralistmodelnamed}, which scores each hit, and a cutoff of~$0.8$ on that score decides which hits we keep.
+The cutoff and a target accuracy of~$80\%$ are both arbitrary choices for this paper, and the manual validation in Section~\ref{sec:validation} checks the cutoff against that target.
+In the label-only run in Section~\ref{sec:results}, labels alone accepted false positives, and Section~\ref{sec:relation} proposes improvements to this step.
 
 \subsection{Manual validation}
 \label{sec:validation}
 
-A human check will act as a quality gate for every step that relies on a model, which are taught-tool extraction, the choice of an owning repository when a tool is not already linked, and license gaps when a model helps fill them.
+Every step that relies on a model will go through a human quality gate.
+Those steps are taught-tool extraction, the choice of an owning repository when a tool is not already linked, and license gaps when a model helps fill them.
 
-We will label the taught tools in a random sample of the population, drawn with the shared seed and sized before anyone sees the model output.
-From those labels we will report precision, the share of extracted tools that are truly taught tools, and recall, the share of truly taught tools the model finds, along with inter-rater agreement on a subset that two authors label independently.
-If a stage falls short, we will change its labels or cutoff and run it again.
-Once it meets the target accuracy set in Section~\ref{sec:extraction}, we will fill the remaining gaps manually, merge the automatic and manual results while dropping entities that do not exist, and only then move on.
-Repository resolution and model-assisted license steps, described in Section~\ref{sec:future}, will use the same gate on their own samples.
+We will label the taught tools in a seeded random sample of the population, sized before anyone sees the model output, and report precision and recall against those labels.
+Precision is the share of extracted tools that are truly taught tools, and recall is the share of truly taught tools the model finds.
+Two authors will label a subset independently, and we will report their agreement.
+A stage that falls short will run again with new labels or a new cutoff.
+Once it meets the target accuracy, we will fill the remaining gaps manually and merge the automatic and manual results, dropping entities that do not exist, before the next stage begins.
+Repository resolution and model-assisted license steps will use the same gate on their own samples, as Section~\ref{sec:future} describes.
 
-Without model help, the same steps would mean full manual extraction, and checking every model output manually would take about as much effort.
-Either path would limit how many skills, tools, and repositories we can cover.
-We will therefore accept a bounded residual error under the sample gate, in the same spirit as a survey that estimates from a sample instead of visiting every case, so the study can scale.
-The gate is meant to catch the failures we expect from these models.
-In extraction, those include treating the folder that hosts the skill, the repository that publishes it, an attribution link, the skill filename, or GitHub inside an address as a taught tool.
+Extracting every tool manually, or checking every model output, would take about the same effort, and either path would limit how many skills, tools, and repositories we can cover.
+We will therefore accept a bounded residual error under the sample gate so the study can scale, in the same way a survey estimates from a sample instead of visiting every case.
+In extraction, the gate is meant to catch a model that marks the hosting folder, the publishing repository, an attribution link, the skill filename, or GitHub inside an address as a taught tool.
