@@ -3,7 +3,9 @@ name = "msr-data-challenge-2027"
 version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
+    "argilla>=2.8.0",
     "datasets>=5.1.0",
+    "dotenv>=0.9.9",
     "gliner[gpu]>=0.2.30",
     "ipykernel>=7.4.0",
     "jupyter>=1.1.1",
