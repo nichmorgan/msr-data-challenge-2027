@@ -17,6 +17,7 @@ locations) and tool licensing.
 2. [Docs](docs/) — artifacts relevant for our research
 3. [Brainstorm](brainstorm/) — any findings for our research
 4. [Data exploration](.data-exploration) - suggested folder for scripts
+5. [Scripts](scripts/README.md) — GitSkills parquet download and Argilla labeling setup
 
 ## Research Questions
 

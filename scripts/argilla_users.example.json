@@ -1,0 +1,23 @@
+[
+    {
+        "username": "owner-username",
+        "role": "owner",
+        "first_name": "First",
+        "last_name": "Last",
+        "password": "change-me"
+    },
+    {
+        "username": "annotator-username",
+        "role": "annotator",
+        "first_name": "First",
+        "last_name": "Last",
+        "password": "change-me"
+    },
+    {
+        "username": "annotator-username-2",
+        "role": "annotator",
+        "first_name": "First",
+        "last_name": "Last",
+        "password": "change-me"
+    }
+]

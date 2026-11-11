@@ -229,3 +229,4 @@ __marimo__/
 .cursor/
 AGENTS.md
 scripts/dataset/
+argilla_users.json
