@@ -43,7 +43,7 @@ Run the notebooks from `scripts/` so `tool_extraction` and `./dataset` resolve:
 
 Schema on dataset `skills`:
 
-- `included` — `yes`, `not_plain_text`, `not_english`, or `not_skill`
+- `included` — `yes`, `not_plain_text`, `not_english`, `not_skill`, or `not_tool`
 - `mentions` — spans on `content` with labels `tool`, `publisher`, or `repository`
 - `manual_details` — one line per marked tool still missing a publisher or repository: `tool | publisher | repository`. Omit the tool name to bind by mark order. Leave a field empty when it is already marked. Repository is a full https project URL, or `none`. Leave the answer blank when every value is marked, or when included is not yes.
 
