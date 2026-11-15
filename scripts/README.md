@@ -32,7 +32,13 @@ cp .env.example .env
 cp argilla_users.example.json argilla_users.json
 ```
 
-`.env` holds `ARGILLA_API_URL` and `ARGILLA_API_KEY`. `argilla_users.json` holds annotator accounts. Both are gitignored.
+`.env` holds `ARGILLA_API_URL`, `ARGILLA_API_KEY`, `HF_TOKEN`, and `HF_DATASET_ID`. `argilla_users.json` holds annotator accounts. Secrets in `.env` are gitignored.
+
+# Hugging Face (processed outputs)
+
+Public derivative dataset: [`nichmorgan/gitskills-msr27`](https://huggingface.co/datasets/nichmorgan/gitskills-msr27) (not the official raw [`mvaccargiu/gitskills`](https://huggingface.co/datasets/mvaccargiu/gitskills) dump).
+
+Push or update that Hub dataset from Argilla, not with a local `hf upload`. Paste `HF_TOKEN` and `HF_DATASET_ID` from `.env` into Argilla’s Hub fields. Keep a write-capable token at https://huggingface.co/settings/tokens if you need to rotate one.
 
 Run the notebooks from `scripts/` so `tool_extraction` and `./dataset` resolve:
 
